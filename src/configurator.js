@@ -1,15 +1,52 @@
 import * as fabric from 'fabric';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const el     = document.getElementById('pfs-canvas');
-  const canvas = new fabric.Canvas(el, { backgroundColor: '#eee' });
+  /* canvas */
+  const canvas = new fabric.Canvas('pfs-canvas', { backgroundColor: '#eee' });
 
-  const photo = new fabric.Rect({
-    width: 5 * 90,   // 5 in @ 90 ppi
-    height: 7 * 90,  // 7 in
-    fill: '#fff',
-    stroke: '#999'
+  /* placeholder 5×7 rectangle */
+  const frame = new fabric.Rect({
+    width : 5 * 90,
+    height: 7 * 90,
+    fill  : '#fff',
+    stroke: '#999',
   });
+  canvas.add(frame);
+  canvas.centerObject(frame);
+  canvas.requestRenderAll();
 
-  canvas.add(photo).centerObject(photo);
+  /* upload listener – THIS is the part we changed */
+  const picker = document.getElementById('pfs-upload');
+
+	picker.addEventListener('change', async (e) => {
+	  const file = e.target.files[0];
+	  if (!file) return;
+
+	  console.log('Chosen file →', file.name);
+	  const url = URL.createObjectURL(file);
+
+	  try {
+		let img = await fabric.Image.fromURL(url, { crossOrigin: 'anonymous' });
+
+		if (!(img instanceof fabric.Image)) {
+		  img = new fabric.Image(img);
+		}
+
+		const scale = Math.min(
+		  canvas.getWidth()  / img.width,
+		  canvas.getHeight() / img.height
+		);
+		img.scale(scale);                    // ← separate call
+		img.set({ selectable: false });      // ← now safe
+
+		canvas.clear();
+		canvas.add(img);
+		canvas.centerObject(img);
+		canvas.requestRenderAll();
+	  } finally {
+		URL.revokeObjectURL(url);
+	  }
+	});
+
+
 });
