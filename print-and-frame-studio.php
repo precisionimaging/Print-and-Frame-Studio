@@ -3,7 +3,7 @@
  * Plugin Name:  Print & Frame Studio
  * Plugin URI:   https://precisionimaging.ca/
  * Description:  Custom framing configurator powered by Fabric.js.
- * Version:      0.1.0
+ * Version:      0.1.1
  * Author:       Precision Imaging
  * Author URI:   https://precisionimaging.ca/
  * License:      GPL-2.0+
@@ -93,6 +93,10 @@ Plugin::instance();
     \wp_enqueue_script( 'pfs-configurator' );
 
     ob_start(); ?>
+        <!-- simple file picker -->
+        <input type="file" id="pfs-upload" accept="image/*" style="margin-bottom:1rem;" />
+
+        <!-- our Fabric canvas -->
         <canvas id="pfs-canvas"
                 width="800"
                 height="600"
