@@ -31,6 +31,16 @@ final class Assets {
             [],
             PFS_VERSION
         );
+		
+		wp_localize_script(
+			'pfs-configurator',
+			'PFS_Settings',
+			[
+				'rest_url' => esc_url_raw( rest_url( 'pfs/v1/' ) ), // note trailing /
+				'nonce'    => wp_create_nonce( 'wp_rest' ),
+			]
+		);
+
     }
 
     public function enqueue_admin() {

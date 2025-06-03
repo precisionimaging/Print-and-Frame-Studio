@@ -61,9 +61,10 @@ final class Plugin {
     }
 
     private function __construct() {
-        Assets::instance();          // registers script & style handles
-        Rest::instance();            // REST endpoints
-        WC_Integration::instance();  // hooks WooCommerce (soft-fails if WC absent)
+        Assets::instance();
+        Rest::instance();
+        WC_Integration::instance();
+        Image_Upload::instance();  
     }
 
     // stop cloning / unserialising
