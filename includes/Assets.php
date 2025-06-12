@@ -25,11 +25,11 @@ final class Assets {
             PFS_VERSION,
             true
         );
-        wp_register_style(
+
+        wp_localize_script(
             'pfs-configurator',
-            PFS_PLUGIN_URL . 'build/configurator.css',
-            [],
-            PFS_VERSION
+            'PFS_Settings',
+            [ 'rest_url' => rest_url( 'pfs/v1/' ) ]
         );
     }
 
